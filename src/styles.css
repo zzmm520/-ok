@@ -351,23 +351,9 @@ button {
   width: 100%;
   object-fit: cover;
   object-position: center;
-  opacity: 0;
+  opacity: 1;
   transform: scale(1.02);
   filter: saturate(1.08) contrast(1.04);
-  transition: opacity 900ms ease;
-}
-
-.hero-video.is-ready,
-.hero-poster-backdrop {
-  opacity: 1;
-}
-
-.hero-poster-backdrop {
-  z-index: 0;
-}
-
-.hero-poster-backdrop.is-hidden {
-  opacity: 0;
 }
 
 .hero-video-overlay {

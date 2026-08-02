@@ -411,18 +411,11 @@ function ParticleField() {
 }
 
 function Hero() {
-  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
-  const [isVideoReady, setIsVideoReady] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setShouldLoadVideo(true), 180);
-    return () => window.clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
     const video = videoRef.current;
-    if (!video || !shouldLoadVideo) return;
+    if (!video) return;
 
     const playVideo = () => {
       void video.play().catch(() => undefined);
@@ -434,34 +427,25 @@ function Hero() {
     return () => {
       document.removeEventListener("visibilitychange", playVideo);
     };
-  }, [shouldLoadVideo]);
+  }, []);
 
   return (
     <section id="home" className="dopamine-hero relative min-h-screen overflow-hidden">
       <div className="opening-mask" aria-hidden="true" />
       <div className="hero-video-layer absolute inset-0">
-        <img
-          className={`hero-video hero-poster-backdrop ${isVideoReady ? "is-hidden" : ""}`}
-          src="/images/hero-poster.jpg"
-          alt=""
+        <video
+          ref={videoRef}
+          className="hero-video"
+          src="/videos/hero-video.mp4#t=10"
+          preload="auto"
+          autoPlay
+          loop
+          muted
+          playsInline
+          onCanPlay={(event) => {
+            void event.currentTarget.play().catch(() => undefined);
+          }}
         />
-        {shouldLoadVideo ? (
-          <video
-            ref={videoRef}
-            className={`hero-video ${isVideoReady ? "is-ready" : ""}`}
-            src="/videos/hero-video.mp4#t=10"
-            poster="/images/hero-poster.jpg"
-            preload="auto"
-            autoPlay
-            loop
-            muted
-            playsInline
-            onCanPlay={(event) => {
-              setIsVideoReady(true);
-              void event.currentTarget.play().catch(() => undefined);
-            }}
-          />
-        ) : null}
         <div className="hero-video-overlay" />
       </div>
       <div className="hero-liquid-effect" aria-hidden="true">
