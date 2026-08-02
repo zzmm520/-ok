@@ -1,0 +1,14 @@
+.magic-rings-container {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.magic-rings-container canvas {
+  display: block;
+  height: 100%;
+  width: 100%;
+}

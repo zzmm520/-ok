@@ -1,0 +1,96 @@
+export const artists = [
+  {
+    name: "周杰伦",
+    direction: "华语流行、旋律创作、青春记忆",
+    albumTitle: "青春旋律档案",
+    albumTone: "from-[#ffe66d] via-[#ff7ab6] to-[#7bdff2]",
+    albumMark: "J",
+    portrait: "/images/artists/optimized/jay-chou.jpg",
+  },
+  {
+    name: "林俊杰",
+    direction: "情绪表达、高音控制、R&B元素",
+    albumTitle: "R&B情绪声场",
+    albumTone: "from-[#b8f7ff] via-[#d9b8ff] to-[#ff8bd1]",
+    albumMark: "JJ",
+    portrait: "/images/artists/optimized/jj-lin.jpg",
+  },
+  {
+    name: "王力宏",
+    direction: "音乐融合能力、真假音转换",
+    albumTitle: "融合律动实验",
+    albumTone: "from-[#a8ff78] via-[#78ffd6] to-[#ff7eb3]",
+    albumMark: "W",
+    portrait: "/images/artists/optimized/wang-leehom.jpg",
+  },
+  {
+    name: "梁博",
+    direction: "摇滚质感、声音力量",
+    albumTitle: "现场力量轨道",
+    albumTone: "from-[#ffd166] via-[#ef476f] to-[#118ab2]",
+    albumMark: "LB",
+    portrait: "/images/artists/optimized/liang-bo.jpg",
+  },
+  {
+    name: "薛之谦",
+    direction: "情感叙事能力",
+    albumTitle: "叙事情歌剧场",
+    albumTone: "from-[#ffc6ff] via-[#bdb2ff] to-[#a0c4ff]",
+    albumMark: "X",
+    portrait: "/images/artists/optimized/xue-zhiqian.jpg",
+  },
+  {
+    name: "李荣浩",
+    direction: "松弛感、独特声线",
+    albumTitle: "松弛男声切片",
+    albumTone: "from-[#fdffb6] via-[#caffbf] to-[#9bf6ff]",
+    albumMark: "L",
+    portrait: "/images/artists/optimized/li-ronghao.jpg",
+  },
+  {
+    name: "胡夏",
+    direction: "清澈声线、青春感",
+    albumTitle: "清澈青春回声",
+    albumTone: "from-[#caffbf] via-[#9bf6ff] to-[#bdb2ff]",
+    albumMark: "H",
+    portrait: "/images/artists/optimized/hu-xia.jpg",
+    portraitPosition: "center 38%",
+  },
+  {
+    name: "张杰",
+    direction: "高音能力、舞台感染力",
+    albumTitle: "高音舞台能量",
+    albumTone: "from-[#ffadad] via-[#ffd6a5] to-[#fdffb6]",
+    albumMark: "Z",
+    portrait: "/images/artists/optimized/zhang-jie.jpg",
+    portraitPosition: "center 32%",
+  },
+];
+
+export const musicDna = [
+  {
+    title: "华语流行",
+    representatives: ["周杰伦", "林俊杰"],
+    description: "旋律记忆、流行语感和青春叙事，是我音乐审美的底色。",
+  },
+  {
+    title: "情绪表达",
+    representatives: ["薛之谦", "李荣浩"],
+    description: "把克制、遗憾和故事唱出来，比单纯炫技更打动我。",
+  },
+  {
+    title: "清澈治愈",
+    representatives: ["胡夏"],
+    description: "干净的声线和少年感，让歌曲拥有温柔的光。",
+  },
+  {
+    title: "高音表现",
+    representatives: ["张杰"],
+    description: "稳定的中高音和舞台感染力，是爆发段落的核心。",
+  },
+  {
+    title: "创作与力量",
+    representatives: ["梁博", "王力宏"],
+    description: "融合、律动、力量感和真实表达，让声音更有棱角。",
+  },
+];

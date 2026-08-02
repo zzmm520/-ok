@@ -1,0 +1,22 @@
+export const profile = {
+  name: "我的名字",
+  siteName: "我的音乐宇宙",
+  englishName: "麦霸！不加椰奶的清补凉",
+  role: "私人音乐档案 / KTV实力档案 / 声音人格展示",
+  heroTitle: "用声音记录生活，用音乐表达自己",
+  heroSubtitle: "一个属于我的私人音乐宇宙",
+  email: "1120680740@qq.com",
+  social: "VX:z1120680740",
+  qqMusicPlaylistUrl: "https://c6.y.qq.com/base/fcgi-bin/u?__=EvlFY3MkHbDd",
+  avatarInitials: "MU",
+  closingLine: "每个人都有自己的BGM。",
+  positioning: [
+    "华语流行",
+    "情感型歌曲",
+    "治愈系歌曲",
+    "R&B",
+    "民谣",
+    "男声情歌",
+  ],
+  values: ["声音里的故事感", "情绪递进", "歌词共鸣", "旋律感染力"],
+};
