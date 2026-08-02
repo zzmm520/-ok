@@ -118,6 +118,62 @@ button {
   z-index: 2;
 }
 
+.song-play-button {
+  position: relative;
+  display: grid;
+  height: 46px;
+  width: 46px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 28% 22%, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.42)),
+    linear-gradient(135deg, rgba(255, 105, 180, 0.32), rgba(67, 215, 255, 0.28));
+  color: #1d1b2a;
+  box-shadow:
+    0 14px 38px rgba(180, 86, 168, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.78);
+  text-decoration: none;
+  transition:
+    transform 260ms ease,
+    color 260ms ease,
+    box-shadow 260ms ease,
+    background 260ms ease;
+}
+
+.song-play-button::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 105, 180, 0.3);
+  opacity: 0;
+  transform: scale(0.82);
+  transition:
+    opacity 260ms ease,
+    transform 260ms ease;
+}
+
+.song-play-button:hover,
+.song-play-button:focus-visible {
+  color: #ffffff;
+  transform: translateY(-3px) scale(1.05);
+  background:
+    radial-gradient(circle at 28% 22%, rgba(255, 255, 255, 0.42), transparent 34%),
+    linear-gradient(135deg, #ff4fd8, #43d7ff);
+  box-shadow:
+    0 18px 48px rgba(255, 79, 216, 0.28),
+    0 0 0 8px rgba(255, 255, 255, 0.16);
+  outline: none;
+}
+
+.song-play-button:hover::after,
+.song-play-button:focus-visible::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
 .song-card.has-song-cover::before {
   content: "";
   position: absolute;
@@ -289,12 +345,29 @@ button {
 }
 
 .hero-video {
+  position: absolute;
+  inset: 0;
   height: 100%;
   width: 100%;
   object-fit: cover;
   object-position: center;
+  opacity: 0;
   transform: scale(1.02);
   filter: saturate(1.08) contrast(1.04);
+  transition: opacity 900ms ease;
+}
+
+.hero-video.is-ready,
+.hero-poster-backdrop {
+  opacity: 1;
+}
+
+.hero-poster-backdrop {
+  z-index: 0;
+}
+
+.hero-poster-backdrop.is-hidden {
+  opacity: 0;
 }
 
 .hero-video-overlay {
@@ -856,13 +929,17 @@ button {
 
 .qq-track-row {
   display: grid;
-  grid-template-columns: 42px 1fr;
+  grid-template-columns: 42px minmax(0, 1fr) 46px;
   gap: 14px;
   align-items: center;
   border: 1px solid rgba(255, 255, 255, 0.52);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.38);
   padding: 12px 14px;
+}
+
+.qq-track-row > div {
+  min-width: 0;
 }
 
 .qq-track-row span {
@@ -875,6 +952,12 @@ button {
   color: white;
   font-size: 12px;
   font-weight: 700;
+}
+
+.qq-track-play {
+  justify-self: end;
+  height: 42px;
+  width: 42px;
 }
 
 .sync-step {

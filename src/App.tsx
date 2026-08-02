@@ -287,6 +287,14 @@ function getQQAlbumCover(albumMid: string) {
     : "";
 }
 
+function getQQSongPlayUrl(songMid?: string) {
+  return songMid ? `https://y.qq.com/n/ryqq/songDetail/${songMid}` : "";
+}
+
+function getQQSearchUrl(song: Song) {
+  return `https://y.qq.com/n/ryqq/search?w=${encodeURIComponent(`${song.title} ${song.artist}`)}`;
+}
+
 const manualSongCovers = new Map([
   ["消愁", "002xoonH2Bk7FR"],
   ["成都", "003ltiMR4RSrgo"],
@@ -297,10 +305,12 @@ function SongCard({
   song,
   index,
   coverUrl,
+  playUrl,
 }: {
   song: Song;
   index: number;
   coverUrl: string;
+  playUrl: string;
 }) {
   return (
     <article
@@ -318,7 +328,16 @@ function SongCard({
           <p className="text-sm text-violet-200">{song.artist}</p>
           <h4 className="mt-2 text-2xl font-semibold text-white">《{song.title}》</h4>
         </div>
-        <Mic2 className="h-6 w-6 shrink-0 text-white/42" />
+        <a
+          className="song-play-button"
+          href={playUrl}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`试听《${song.title}》`}
+          title={`试听《${song.title}》`}
+        >
+          <Mic2 className="h-5 w-5" />
+        </a>
       </div>
       {coverUrl && <div className="song-sync-badge">QQ音乐专辑背景</div>}
       <div className="mt-5 flex flex-wrap gap-2">
@@ -393,36 +412,56 @@ function ParticleField() {
 
 function Hero() {
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setShouldLoadVideo(true), 700);
+    const timer = window.setTimeout(() => setShouldLoadVideo(true), 180);
     return () => window.clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !shouldLoadVideo) return;
+
+    const playVideo = () => {
+      void video.play().catch(() => undefined);
+    };
+
+    playVideo();
+    document.addEventListener("visibilitychange", playVideo);
+
+    return () => {
+      document.removeEventListener("visibilitychange", playVideo);
+    };
+  }, [shouldLoadVideo]);
 
   return (
     <section id="home" className="dopamine-hero relative min-h-screen overflow-hidden">
       <div className="opening-mask" aria-hidden="true" />
       <div className="hero-video-layer absolute inset-0">
+        <img
+          className={`hero-video hero-poster-backdrop ${isVideoReady ? "is-hidden" : ""}`}
+          src="/images/hero-poster.jpg"
+          alt=""
+        />
         {shouldLoadVideo ? (
           <video
-            className="hero-video"
-            src="/videos/hero-video.mp4"
+            ref={videoRef}
+            className={`hero-video ${isVideoReady ? "is-ready" : ""}`}
+            src="/videos/hero-video.mp4#t=10"
             poster="/images/hero-poster.jpg"
-            preload="metadata"
+            preload="auto"
             autoPlay
+            loop
             muted
             playsInline
-            onLoadedMetadata={(event) => {
-              event.currentTarget.currentTime = 10;
-            }}
-            onEnded={(event) => {
-              event.currentTarget.currentTime = 10;
-              event.currentTarget.play();
+            onCanPlay={(event) => {
+              setIsVideoReady(true);
+              void event.currentTarget.play().catch(() => undefined);
             }}
           />
-        ) : (
-          <img className="hero-video hero-poster" src="/images/hero-poster.jpg" alt="" />
-        )}
+        ) : null}
         <div className="hero-video-overlay" />
       </div>
       <div className="hero-liquid-effect" aria-hidden="true">
@@ -692,6 +731,11 @@ function SongLibrary() {
     return syncedSong ? getQQAlbumCover(syncedSong.albumMid) : "";
   }
 
+  function findSongPlayUrl(song: Song) {
+    const syncedSong = findSyncedSong(song);
+    return getQQSongPlayUrl(syncedSong?.mid) || getQQSearchUrl(song);
+  }
+
   const grouped = useMemo<Record<Song["category"], Song[]>>(
     () => ({
       情绪表达类: songs.filter((song) => song.category === "情绪表达类"),
@@ -716,6 +760,7 @@ function SongLibrary() {
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
             {list.map((song, index) => {
               const coverUrl = findSongCover(song);
+              const playUrl = findSongPlayUrl(song);
 
               return (
                 <SongCard
@@ -723,6 +768,7 @@ function SongLibrary() {
                   song={song}
                   index={index}
                   coverUrl={coverUrl}
+                  playUrl={playUrl}
                 />
               );
             })}
@@ -880,6 +926,16 @@ function QQMusicSync() {
                       {song.artist} · {song.album} · {song.durationText}
                     </p>
                   </div>
+                  <a
+                    className="song-play-button qq-track-play"
+                    href={getQQSongPlayUrl(song.mid)}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`试听《${song.title}》`}
+                    title={`试听《${song.title}》`}
+                  >
+                    <Mic2 className="h-5 w-5" />
+                  </a>
                 </div>
               ))}
             </div>

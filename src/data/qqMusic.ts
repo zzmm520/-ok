@@ -18,6 +18,7 @@ export const qqMusicSync = {
     title: song.title,
     artist: song.artist,
     album: song.album,
+    mid: song.mid,
     durationText: song.durationText,
   })),
   pipeline: [
