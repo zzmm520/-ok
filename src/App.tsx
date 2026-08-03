@@ -295,6 +295,10 @@ function getQQSearchUrl(song: Song) {
   return `https://y.qq.com/n/ryqq/search?w=${encodeURIComponent(`${song.title} ${song.artist}`)}`;
 }
 
+function getQQArtistUrl(artistName: string) {
+  return `https://y.qq.com/n/ryqq/search?w=${encodeURIComponent(artistName)}`;
+}
+
 const manualSongCovers = new Map([
   ["消愁", "002xoonH2Bk7FR"],
   ["成都", "003ltiMR4RSrgo"],
@@ -410,7 +414,10 @@ function ParticleField() {
   );
 }
 
+const HERO_VIDEO_START = 5;
+
 function Hero() {
+  const [isVideoReady, setIsVideoReady] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -418,6 +425,9 @@ function Hero() {
     if (!video) return;
 
     const playVideo = () => {
+      if (video.currentTime < HERO_VIDEO_START) {
+        video.currentTime = HERO_VIDEO_START;
+      }
       void video.play().catch(() => undefined);
     };
 
@@ -435,14 +445,23 @@ function Hero() {
       <div className="hero-video-layer absolute inset-0">
         <video
           ref={videoRef}
-          className="hero-video"
-          src="/videos/hero-video.mp4#t=10"
+          className={`hero-video ${isVideoReady ? "is-ready" : ""}`}
+          src={`/videos/hero-video.mp4#t=${HERO_VIDEO_START}`}
           preload="auto"
           autoPlay
-          loop
           muted
           playsInline
+          onLoadedMetadata={(event) => {
+            if (event.currentTarget.currentTime < HERO_VIDEO_START) {
+              event.currentTarget.currentTime = HERO_VIDEO_START;
+            }
+          }}
           onCanPlay={(event) => {
+            setIsVideoReady(true);
+            void event.currentTarget.play().catch(() => undefined);
+          }}
+          onEnded={(event) => {
+            event.currentTarget.currentTime = HERO_VIDEO_START;
             void event.currentTarget.play().catch(() => undefined);
           }}
         />
@@ -644,9 +663,17 @@ function MusicDna() {
             <p className="mt-4 text-sm leading-6 text-white/58">{item.description}</p>
             <div className="mt-7 flex flex-wrap gap-2">
               {item.representatives.map((name) => (
-                <span key={name} className="rounded-full bg-white/8 px-3 py-1 text-sm text-white/78">
+                <a
+                  key={name}
+                  className="artist-chip-link"
+                  href={getQQArtistUrl(name)}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`打开 QQ音乐歌手：${name}`}
+                  title={`打开 QQ音乐歌手：${name}`}
+                >
                   {name}
-                </span>
+                </a>
               ))}
             </div>
           </article>
@@ -669,7 +696,19 @@ function MusicDna() {
               <Music2 className="album-note h-9 w-9" />
             </div>
             <div className="p-5">
-              <p className="text-lg font-semibold text-white">{artist.name}</p>
+              <div className="artist-card-name-row">
+                <p className="text-lg font-semibold text-white">{artist.name}</p>
+                <a
+                  className="artist-jump-button"
+                  href={getQQArtistUrl(artist.name)}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`打开 QQ音乐歌手：${artist.name}`}
+                  title={`打开 QQ音乐歌手：${artist.name}`}
+                >
+                  <Music2 className="h-5 w-5" />
+                </a>
+              </div>
               <p className="mt-1 text-sm font-semibold text-fuchsia-600">{artist.albumTitle}</p>
               <p className="mt-3 text-sm leading-6 text-white/52">{artist.direction}</p>
             </div>
